@@ -19,7 +19,7 @@ function renderCategory(getCategories) {
 
     div.innerHTML = `
 
-<button data-categoryId='${categoryId}' class="btn border-none w-full ">${category_name}</button>
+<button data-categoryId='${categoryId}' class="category-btn btn btn-ghost border-none  w-full ">${category_name}</button>
 
 `;
     categoriesButtonsContainer.appendChild(div);
@@ -27,3 +27,18 @@ function renderCategory(getCategories) {
 }
 
 getAllCategories();
+
+// categories button event listener
+categoriesButtonsContainer.addEventListener("click", function (event) {
+  const targetButton = event.target;
+
+  const allButtons =
+    categoriesButtonsContainer.querySelectorAll(".category-btn");
+
+  if (targetButton.classList.contains("category-btn")) {
+    allButtons.forEach((button) => {
+      button.classList.remove("primary-bg", "text-white");
+    });
+    targetButton.classList.add("primary-bg", "text-white");
+  }
+});
