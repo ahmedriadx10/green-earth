@@ -38,7 +38,7 @@
   <body class="bg-[#f0fcf4]">
     <!-- navbar area -->
 
-    <nav class="sticky top-0">
+    <nav class="">
       <div class="navbar primary-bg shadow-sm">
         <div class="navbar-start">
           <div class="dropdown">
@@ -127,7 +127,18 @@
         </section>
 
         <!-- trees cards container-->
-        <section class="col-span-8" id="trees-card-container"></section>
+        <section class="col-span-8">
+          <section
+            class="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+            id="trees-card-container"
+          ></section>
+
+          <div class="hidden" id="loadingSpinner">
+            <div class="flex justify-between items-center py-12 w-full ">
+              <span class="loading loading-dots loading-xl mx-auto"></span>
+            </div>
+          </div>
+        </section>
 
         <!-- cart area  -->
         <section class="bg-accent col-span-2">
