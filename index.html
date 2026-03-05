@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +28,7 @@
   
   <!-- navbar area -->
 
-<nav>
+<nav class="sticky top-0">
     <div class="navbar primary-bg shadow-sm">
   <div class="navbar-start">
     <div class="dropdown ">
@@ -37,9 +37,9 @@
       </div>
       <ul
         tabindex="-1"
-        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-      <li><a href="#">About</a></li>
-      <li><a href="#">Gallery</a></li>
+        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-100 mt-3 w-52 p-2 shadow">
+      <li><a href="#about-area">About</a></li>
+      <li><a href="#footer-area">Donate</a></li>
       <li><a href="#">Plant a Tree</a></li>
       </ul>
     </div>
@@ -47,13 +47,13 @@
   </div>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1 text-white">
-      <li><a href="#">About</a></li>
-      <li><a href="#">Gallery</a></li>
+      <li><a href="#about-area">About</a></li>
+      <li><a href="#footer-area">Donate</a></li>
       <li><a href="#">Plant a Tree</a></li>
     </ul>
   </div>
   <div class="navbar-end">
-    <a class="btn rounded-full btn-warning primary">Plant a Tree</a>
+    <a class="btn rounded-full btn-warning primary" href="#">Plant a Tree</a>
   </div>
 </div>
 </nav>
@@ -71,7 +71,7 @@
     <h2 class="font-bold text-3xl md:text-4xl lg:text-5xl">Plant a Tree, Grow a Future</h2>
 <p class="text-gray-500">Join our mission to plant 1 million trees and make the Earth greener for future
 generations.</p>
-    <a class="btn rounded-full btn-warning primary">Plant a Tree</a>
+    <a class="btn rounded-full btn-warning primary" href="#">Plant a Tree</a>
 
 
 </div>
@@ -89,7 +89,7 @@ generations.</p>
 
 <!-- campaign area -->
 
-<section class="py-12">
+<section class="py-12" id="about-area">
 
   <h4 class="font-semibold text-center text-3xl mb-10">About the Campaign</h4>
 <section class=" max-w-6xl mx-auto w-[90%] flex flex-col items-center lg:flex-row lg:justify-between gap-8">
@@ -145,6 +145,29 @@ generations.</p>
 
 </section>
 
+
+<footer class="pt-20 bg-[#166534]" id="footer-area">
+<div class="card primary-bg w-[90%] max-w-xl mx-auto mb-20">
+      <div class="card-body">
+        <fieldset class="fieldset">
+        
+          <input type="text" class="input w-full" placeholder="Your Name" />
+        
+          <input type="email" class="input w-full" placeholder="Your Email Address" />
+       <select class="select appearance-none w-full">
+  <option disabled selected>Number of Trees</option>
+  <option>5</option>
+  <option>10</option>
+  <option>20</option>
+</select>
+          <button class="btn btn-warning rounded-full mt-4">Donate Now</button>
+        </fieldset>
+      </div>
+    </div>
+
+
+    <p class="bg-[#14532D] py-5 text-center text-white">&copy; Green Earth. All Right Reserved</p>
+</footer>
 
 <script src="./scripts/app.js"></script>
 </body>
