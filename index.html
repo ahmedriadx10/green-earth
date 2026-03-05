@@ -111,12 +111,12 @@
       </h2>
 
       <!-- trees main container -->
-      <section class="grid grid-cols-12 gap-4">
+      <section class=" grid grid-cols-12 gap-4">
         <!-- categories -->
-        <section class="col-span-2">
+        <section class="col-span-full  lg:col-span-2">
           <h6 class="font-semibold text-xl">Categories</h6>
           <div
-            class="mt-2.5 space-y-1 bg-[#f0fcf4] sticky top-5"
+            class="mt-2.5 gap-2.5 flex flex-wrap justify-center lg:block space-y-1 bg-[#f0fcf4] sticky top-5"
             id="categories-container"
           >
             <div>
@@ -130,7 +130,7 @@
         </section>
 
         <!-- trees cards container-->
-        <section class="col-span-8">
+        <section class="col-span-full lg:col-span-10 xl:col-span-8">
           <section
             class="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
             id="trees-card-container"
@@ -145,7 +145,7 @@
 
         <!-- cart area  -->
         <section
-          class="bg-base-100 p-2.5 space-y-3 shadow-lg col-span-2 max-h-[500px] rounded-lg sticky top-5"
+          class="bg-base-100 p-2.5 space-y-3 col-span-full shadow-lg xl:col-span-2 max-h-[500px] rounded-lg sticky top-5"
         >
           <h6 class="font-semibold text-xl">Your Cart</h6>
           <section id="user-cart-container" class=" py-2.5 space-y-2.5 max-h-96 overflow-y-auto">
