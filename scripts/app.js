@@ -3,6 +3,11 @@ const categoriesButtonsContainer = document.getElementById(
 );
 const treesCardContainer = document.getElementById("trees-card-container");
 const spinnerContainer = document.getElementById("loadingSpinner");
+const userCartContainer = document.getElementById("user-cart-container");
+const plantDetailsModal = document.getElementById("plant_details_modal");
+const modalDataContainer = document.getElementById("dynamic_modal_data");
+const cartTotalCount = document.getElementById("total-count");
+let userCart = [];
 async function getAllCategories() {
   const getData = await fetch(
     "https://openapi.programming-hero.com/api/categories",
@@ -43,6 +48,7 @@ categoriesButtonsContainer.addEventListener("click", function (event) {
     // conditional data category fitler
 
     if (targetButton.innerText.trim() === "All Trees") {
+      getAllPlants();
     } else {
       const categoryId = targetButton.dataset.categoryid;
 
@@ -52,11 +58,12 @@ categoriesButtonsContainer.addEventListener("click", function (event) {
 });
 
 async function categoryPlant(categoryId) {
+  loadingSpiner(true);
   const categoryPlantsData = await fetch(
     `https://openapi.programming-hero.com/api/category/${categoryId}`,
   );
   const convWait = await categoryPlantsData.json();
-
+  loadingSpiner(false);
   const { plants } = convWait;
 
   renderDataonTheUI(plants);
@@ -81,7 +88,7 @@ function renderDataonTheUI(getDataContainer) {
   treesCardContainer.innerHTML = "";
 
   getDataContainer.forEach((card) => {
-    const { image, name, description, category, price } = card;
+    const { id, image, name, description, category, price } = card;
     const plantCard = document.createElement("div");
 
     plantCard.innerHTML = `
@@ -89,13 +96,14 @@ function renderDataonTheUI(getDataContainer) {
   
             <figure class='overflow-hidden'>
               <img 
+              data-id='${id}'
                 src="${image}"
                 alt='${name}'
-                class='transition-transform h-52 w-full object-cover hover:scale-[1.2]'
+                class='details-show transition-transform h-52 w-full object-cover hover:scale-[1.2] cursor-pointer'
               />
             </figure>
             <div class="card-body p-4">
-              <h2 class="card-title">${name}</h2>
+              <h2  data-id='${id}'class="details-show card-title hover:text-primary cursor-pointer hover:underline">${name}</h2>
               <p class="line-clamp-2">
                 ${description}
               </p>
@@ -104,7 +112,7 @@ function renderDataonTheUI(getDataContainer) {
                 <div><p class="font-semibold">$${price}</p></div>
               </div>
               <div class="card-actions">
-                <button class="add-cart-btn btn primary-bg text-white w-full rounded-full">Buy Now</button>
+                <button data-id='${id}' data-name='${name}' data-price='${price}' class="add-cart-btn btn primary-bg text-white w-full rounded-full">Add to Cart</button>
               </div>
             </div>
        
@@ -114,6 +122,41 @@ function renderDataonTheUI(getDataContainer) {
     plantCard.className = "card bg-base-100 shadow-sm";
     treesCardContainer.appendChild(plantCard);
   });
+}
+
+// plant details get
+
+async function plantsDetailsGet(id) {
+  const getPlantDetails = await fetch(
+    `https://openapi.programming-hero.com/api/plant/${id}`,
+  );
+  const convertData = await getPlantDetails.json();
+  const { plants } = convertData;
+
+  renderModal(plants);
+}
+
+// show details on  modal
+
+function renderModal(data) {
+  const { image, name, description, category, price } = data;
+
+  modalDataContainer.innerHTML = `
+<div><img src='${image}' class='max-h-52 w-full rounded-lg'></div>
+<div class=' space-y-2.5'>
+      <h2 class="card-title font-bold ">${name}</h2>
+              <p class="">
+                ${description}
+              </p>
+         <div class="flex justify-between">
+                <div class="badge badge-soft badge-success">${category}</div>
+                <div><p class="font-semibold">$${price}</p></div>
+              </div>
+</div>
+
+`;
+
+  plantDetailsModal.showModal();
 }
 
 // loading spiner
@@ -127,6 +170,69 @@ function loadingSpiner(wanna) {
     spinnerContainer.classList.add("hidden");
   }
 }
+
+function renderCart(getData) {
+  if (getData.length === 0) {
+    return;
+  }
+
+  userCartContainer.innerHTML = "";
+
+  getData.forEach((cart) => {
+    const { name, price, quantity } = cart;
+
+    const cartCard = document.createElement("div");
+    cartCard.innerHTML = `
+
+    <div class="p-2 flex justify-between items-center shadow bg-slate-200">
+                <div class="space-y-1">
+                  <p class="font-semibold text-[#1F2937]">${name}</p>
+                  <p>$${price * quantity} x <span>${quantity}</span></p>
+                </div>
+                <button class="delete-cart btn btn-ghost btn-circle">X</button>
+              </div>
+`;
+
+    userCartContainer.appendChild(cartCard);
+  });
+
+      const getTotalPrice=userCart.reduce((x,y)=>x+(y.price*y.quantity),0)
+
+  cartTotalCount.innerText=getTotalPrice
+}
+
+
+// user cart container event delegation for cart delete functionality
+
+
+
+
+// trees card main container event delgeation
+treesCardContainer.addEventListener("click", function (event) {
+  const targetElement = event.target;
+
+  if (targetElement.classList.contains("details-show")) {
+    const dataId = targetElement.dataset.id;
+    plantsDetailsGet(Number(dataId));
+  } else if (targetElement.classList.contains("add-cart-btn")) {
+    const details = targetElement.dataset;
+    const { id, name, price } = details;
+
+    // find data same cart alread stored or not
+
+    const findCard = userCart.find((cart) => cart.id === id);
+
+    if (findCard) {
+      findCard.quantity += 1;
+      renderCart(userCart);
+
+      return;
+    }
+    const pushData = { id, name, price: Number(price), quantity: 1 };
+    userCart.push(pushData);
+    renderCart(userCart);
+  }
+});
 
 getAllCategories();
 getAllPlants();
