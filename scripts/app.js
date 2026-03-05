@@ -173,39 +173,55 @@ function loadingSpiner(wanna) {
 
 function renderCart(getData) {
   if (getData.length === 0) {
+    userCartContainer.innerHTML = "";
+    cartTotalCount.innerText = `$0`;
+    const blankCart = document.createElement("div");
+    blankCart.innerHTML = `
+    
+      <div class="py-4 text-center ">
+            <h6 class=''>Your cart is empthy <i class="fa-solid  fa-triangle-exclamation" style="color: rgb(0, 0, 0);"></i></h6>    </div>`;
+    userCartContainer.appendChild(blankCart);
     return;
   }
 
   userCartContainer.innerHTML = "";
 
   getData.forEach((cart) => {
-    const { name, price, quantity } = cart;
+    const { id, name, price, quantity } = cart;
 
     const cartCard = document.createElement("div");
     cartCard.innerHTML = `
 
-    <div class="p-2 flex justify-between items-center shadow bg-slate-200">
+    <div class="p-2 flex justify-between items-center shadow rounded-lg bg-slate-200">
                 <div class="space-y-1">
                   <p class="font-semibold text-[#1F2937]">${name}</p>
                   <p>$${price * quantity} x <span>${quantity}</span></p>
                 </div>
-                <button class="delete-cart btn btn-ghost btn-circle">X</button>
+                <button data-cart-id='${id}' class="delete-cart btn btn-ghost btn-circle">X</button>
               </div>
 `;
 
     userCartContainer.appendChild(cartCard);
   });
 
-      const getTotalPrice=userCart.reduce((x,y)=>x+(y.price*y.quantity),0)
+  const getTotalPrice = userCart.reduce((x, y) => x + y.price * y.quantity, 0);
 
-  cartTotalCount.innerText=getTotalPrice
+  cartTotalCount.innerText = `$${getTotalPrice}`;
 }
-
 
 // user cart container event delegation for cart delete functionality
 
+userCartContainer.addEventListener("click", (e) => {
+  const targetBtn = e.target;
 
+  if (targetBtn.classList.contains("delete-cart")) {
+    const id = targetBtn.dataset.cartId;
 
+    userCart = userCart.filter((cart) => cart.id !== Number(id));
+
+    renderCart(userCart);
+  }
+});
 
 // trees card main container event delgeation
 treesCardContainer.addEventListener("click", function (event) {
@@ -220,7 +236,7 @@ treesCardContainer.addEventListener("click", function (event) {
 
     // find data same cart alread stored or not
 
-    const findCard = userCart.find((cart) => cart.id === id);
+    const findCard = userCart.find((cart) => cart.id === Number(id));
 
     if (findCard) {
       findCard.quantity += 1;
@@ -228,7 +244,12 @@ treesCardContainer.addEventListener("click", function (event) {
 
       return;
     }
-    const pushData = { id, name, price: Number(price), quantity: 1 };
+    const pushData = {
+      id: Number(id),
+      name,
+      price: Number(price),
+      quantity: 1,
+    };
     userCart.push(pushData);
     renderCart(userCart);
   }
@@ -236,3 +257,4 @@ treesCardContainer.addEventListener("click", function (event) {
 
 getAllCategories();
 getAllPlants();
+renderCart(userCart);
